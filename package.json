@@ -1,0 +1,23 @@
+{
+  "name": "lear-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Humyang/lear-graphql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Humyang/lear-graphql/issues"
+  },
+  "homepage": "https://github.com/Humyang/lear-graphql#readme",
+  "dependencies": {
+    "graphql": "^0.10.3",
+    "koa": "^2.3.0"
+  }
+}
