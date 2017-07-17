@@ -8,11 +8,11 @@ var koaRouter = require('koa-router')
 var koaBody = require('koa-body')
 var graphqlKoa = require('graphql-server-koa').graphqlKoa
 var { buildSchema } = require('graphql');
-var cors = require('koa-cors')
+// var cors = require('koa-cors')
 const app = new koa();
 const router = new koaRouter();
 const PORT = 3000;
-
+debugger;
 // koaBody is needed just for POST.
 app.use(koaBody());
 
@@ -40,15 +40,20 @@ var myGraphQLSchema = buildSchema(`
     rollOnce:Int!,
     roll(numRolls:Int!):[Int]
   }
+  type Mutation {
+    setMessage(message: String): String
+  }
   type Query {
     hello: String,
     rollDice(numDice:Int!,numSides:Int):[Int],
     quoteOfTheDay:String,
     random:Float!
     rollThreeDice:[Int],
-    getDie(numSides:Int):RandomDie
+    getDie(numSides:Int):RandomDie,
+    getMessage:String
   }
 `);
+var fakeDatabase = {}
 // resolver function
 // 解析字段，返回数据
 var root = {
@@ -69,6 +74,13 @@ var root = {
   },
   getDie:function({numSides}){
     return new RandomDie(numSides || 6)
+  },
+  setMessage:function({message}){
+    fakeDatabase.message = message
+    return message+"abc"
+  },
+  getMessage:function(){
+    return fakeDatabase.message
   }
 };
 
@@ -82,10 +94,17 @@ var root = {
 // 	ctx.set('Access-Control-Allow-Origin', "*");
 // 	// next()
 // });
+// router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+//   graphiql: true }));
+
 router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
-  graphiql: true }));
-router.get('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
-  graphiql: true }));
+  graphiql: true,operationName:'RollDice' }));
+router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+  graphiql: true,operationName:'RollDice2' }));
+router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+  graphiql: true,operationName:'SetMessage' }));
+// router.get('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+//   graphiql: true }));
 
 app.use(async function(ctx,next){
 	ctx.set('Access-Control-Allow-Origin', "*");

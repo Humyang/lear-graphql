@@ -16,9 +16,11 @@
     "url": "https://github.com/Humyang/lear-graphql/issues"
   },
   "homepage": "https://github.com/Humyang/lear-graphql#readme",
-
   "dependencies": {
     "graphql": "^0.10.3",
-    "koa": "^2.3.0"
+    "graphql-server-koa": "^1.0.0",
+    "koa": "^2.3.0",
+    "koa-body": "^2.3.0",
+    "koa-router": "^7.2.1"
   }
 }

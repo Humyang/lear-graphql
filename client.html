@@ -32,17 +32,36 @@ xhr.setRequestHeader("Accept", "application/json");
 xhr.onload = function () {
   console.log('data returned:', xhr.response);
 }
-var query = `query RollDice($dice: Int!, $sides: Int) {
+
+var query = `
+query RollDice($dice: Int!, $sides: Int) {
   	rollDice(numDice: $dice, numSides: $sides),
   	getDie(numSides: $sides){
   		rollOnce,
   		roll(numRolls:$dice)
   	},
-	quoteOfTheDay
-}`;
+	quoteOfTheDay,
+	getMessage,
+	
+}
+query RollDice2($dice: Int!, $sides: Int) {
+  	rollDice(numDice: $dice, numSides: $sides),
+  	getDie(numSides: $sides){
+  		rollOnce,
+  		roll(numRolls:$dice)
+  	},
+	quoteOfTheDay,
+	getMessage,
+	
+}
+
+`;
+// mutation SetMessage($message:String){
+// 		setMessage(message: $message)
+// 	}
 xhr.send(JSON.stringify({
   query: query,
-  variables: { dice: dice, sides: sides },
+  variables: { dice: dice, sides: sides,message:'123456'},
 }));
 </script>
 </body>
