@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Template</title>
+</head>
+<body>
+
+<input id="btn" type="button" name="" value="fetch">
+result:<span id="result"></span>
+<script >
+	var btn = document.getElementById('btn')
+	var result = document.getElementById('result')
+	btn.addEventListener('click',function(){
+		console.log(123)
+		fetch('http://localhost:3000/graphql').then(function(res){
+		console.log(res)
+			result.textContent=res
+		}).catch(function(err){
+			result.textContent=err
+		})
+	})
+	
+var dice = 3;
+var sides = 6;
+var xhr = new XMLHttpRequest();
+xhr.responseType = 'json';
+xhr.open("POST", "/graphql");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Accept", "application/json");
+xhr.onload = function () {
+  console.log('data returned:', xhr.response);
+}
+var query = `query RollDice($dice: Int!, $sides: Int) {
+  	rollDice(numDice: $dice, numSides: $sides),
+  	getDie(numSides: $sides){
+  		rollOnce,
+  		roll(numRolls:$dice)
+  	},
+	quoteOfTheDay
+}`;
+xhr.send(JSON.stringify({
+  query: query,
+  variables: { dice: dice, sides: sides },
+}));
+</script>
+</body>
+</html>
