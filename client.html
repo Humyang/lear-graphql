@@ -62,6 +62,7 @@ query RollDice2($dice: Int!, $sides: Int) {
 xhr.send(JSON.stringify({
   query: query,
   variables: { dice: dice, sides: sides,message:'123456'},
+  operationName:{'RollDice':'RollDice2','RollDice':'RollDice'}
 }));
 </script>
 </body>
