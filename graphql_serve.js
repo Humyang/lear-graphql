@@ -8,7 +8,6 @@ var koaRouter = require('koa-router')
 var koaBody = require('koa-body')
 var graphqlKoa = require('graphql-server-koa').graphqlKoa
 var { buildSchema } = require('graphql');
-// var cors = require('koa-cors')
 const app = new koa();
 const router = new koaRouter();
 const PORT = 3000;
