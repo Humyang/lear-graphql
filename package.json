@@ -20,7 +20,9 @@
     "graphql": "^0.10.3",
     "graphql-server-koa": "^1.0.0",
     "koa": "^2.3.0",
+    "koa-better-body": "^3.0.4",
     "koa-body": "^2.3.0",
-    "koa-router": "^7.2.1"
+    "koa-router": "^7.2.1",
+    "koa-static": "^4.0.1"
   }
 }

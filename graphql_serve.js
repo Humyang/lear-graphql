@@ -5,15 +5,16 @@
 
 var koa = require('koa')
 var koaRouter = require('koa-router')
-var koaBody = require('koa-body')
+var body = require('koa-body')
 var graphqlKoa = require('graphql-server-koa').graphqlKoa
 var { buildSchema } = require('graphql');
 const app = new koa();
 const router = new koaRouter();
-const PORT = 3000;
+const PORT = 3300;
+var serve = require('koa-static');
 debugger;
 // koaBody is needed just for POST.
-app.use(koaBody());
+app.use(body());
 
 class RandomDie {
   constructor(numSides) {
@@ -78,7 +79,8 @@ var root = {
     fakeDatabase.message = message
     return message+"abc"
   },
-  getMessage:function(){
+  getMessage:function(e,b,c){
+    debugger
     return fakeDatabase.message
   }
 };
@@ -98,10 +100,10 @@ var root = {
 
 router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
   graphiql: true,operationName:'RollDice' }));
-router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
-  graphiql: true,operationName:'RollDice2' }));
-router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
-  graphiql: true,operationName:'SetMessage' }));
+// router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+//   graphiql: true,operationName:'RollDice2' }));
+// router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
+//   graphiql: true,operationName:'SetMessage' }));
 // router.get('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
 //   graphiql: true }));
 
@@ -109,6 +111,7 @@ app.use(async function(ctx,next){
 	ctx.set('Access-Control-Allow-Origin', "*");
 	await next()
 })
+app.use(serve(".",{maxage:3153600000}))
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.listen(PORT);

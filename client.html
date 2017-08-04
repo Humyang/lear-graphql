@@ -14,7 +14,7 @@ result:<span id="result"></span>
 	var result = document.getElementById('result')
 	btn.addEventListener('click',function(){
 		console.log(123)
-		fetch('http://localhost:3000/graphql').then(function(res){
+		fetch('http://localhost:3300/graphql').then(function(res){
 		console.log(res)
 			result.textContent=res
 		}).catch(function(err){
@@ -41,18 +41,7 @@ query RollDice($dice: Int!, $sides: Int) {
   		roll(numRolls:$dice)
   	},
 	quoteOfTheDay,
-	getMessage,
-	
-}
-query RollDice2($dice: Int!, $sides: Int) {
-  	rollDice(numDice: $dice, numSides: $sides),
-  	getDie(numSides: $sides){
-  		rollOnce,
-  		roll(numRolls:$dice)
-  	},
-	quoteOfTheDay,
-	getMessage,
-	
+	getMessage
 }
 
 `;
@@ -61,8 +50,7 @@ query RollDice2($dice: Int!, $sides: Int) {
 // 	}
 xhr.send(JSON.stringify({
   query: query,
-  variables: { dice: dice, sides: sides,message:'123456'},
-  operationName:'RollDice3'
+  variables: { dice: dice, sides: sides,message:'123456'}
 }));
 </script>
 </body>
