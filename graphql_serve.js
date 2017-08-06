@@ -5,7 +5,8 @@
 
 var koa = require('koa')
 var koaRouter = require('koa-router')
-var body = require('koa-body')
+var koaBody = require('koa-body')
+var body = require('koa-better-body')
 var graphqlKoa = require('graphql-server-koa').graphqlKoa
 var { buildSchema } = require('graphql');
 const app = new koa();
@@ -72,16 +73,16 @@ var root = {
   rollThreeDice: () => {
     return [1, 2, 3].map(_ => 1 + Math.floor(Math.random() * 6));
   },
-  getDie:function({numSides}){
+  getDie:function({numSides},ctx,obj){
+    //obj： The previous object, which for a field on the root Query type is often not used.
     return new RandomDie(numSides || 6)
   },
   setMessage:function({message}){
     fakeDatabase.message = message
     return message+"abc"
   },
-  getMessage:function(e,b,c){
-    debugger
-    return fakeDatabase.message
+  getMessage:(post, args, context, b) => {
+      return 'postRepository.getBody(context.user, post)';
   }
 };
 
@@ -98,8 +99,16 @@ var root = {
 // router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
 //   graphiql: true }));
 
-router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
-  graphiql: true,operationName:'RollDice' }));
+router.post('/graphql',async function(ctx,next){
+  // ctx.aaa = 123
+  ctx.request.body=Object.assign({},ctx.request.fields)
+  await next(ctx)
+}, graphqlKoa((ctx) => {
+
+  return { schema: myGraphQLSchema,rootValue: root,
+  graphiql: true,operationName:'RollDice',context:ctx 
+}
+}));
 // router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
 //   graphiql: true,operationName:'RollDice2' }));
 // router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema,rootValue: root,
