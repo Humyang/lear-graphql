@@ -40,8 +40,17 @@ query RollDice($dice: Int!, $sides: Int) {
   		rollOnce,
   		roll(numRolls:$dice)
   	},
+  	rollThreeDice,
 	quoteOfTheDay,
-	getMessage
+	getMessage,
+	getlist{
+		note_id,
+		note,
+		position{
+			x,
+			y
+		}
+	}
 }
 
 `;

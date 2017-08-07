@@ -34,7 +34,20 @@ class RandomDie {
     return output;
   }
 }
+class Note {
+  constructor() {
+  }
 
+  note_id() {
+    return '1231231233'
+  }
+
+  note() {
+    return '12333123123'
+  }
+}
+// ,
+//     position:Position
 var myGraphQLSchema = buildSchema(`
   type RandomDie{
     numSides:Int!,
@@ -44,6 +57,15 @@ var myGraphQLSchema = buildSchema(`
   type Mutation {
     setMessage(message: String): String
   }
+  type Position{
+    x:Int!,
+    y:Int!
+  }
+  type Note{
+    note_id:String,
+    note:String,
+    position:Position
+  }
   type Query {
     hello: String,
     rollDice(numDice:Int!,numSides:Int):[Int],
@@ -51,7 +73,8 @@ var myGraphQLSchema = buildSchema(`
     random:Float!
     rollThreeDice:[Int],
     getDie(numSides:Int):RandomDie,
-    getMessage:String
+    getMessage:String,
+    getlist:[Note]
   }
 `);
 var fakeDatabase = {}
@@ -83,6 +106,18 @@ var root = {
   },
   getMessage:(post, args, context, b) => {
       return 'postRepository.getBody(context.user, post)';
+  },
+  getlist:function(){
+    return [{
+      note_id:'123',
+      note:'1233',
+      position:{
+        x:1,
+        y:2
+      }
+    }]
+    // return new Note()
+    // return [new Note(),new Note()]
   }
 };
 
